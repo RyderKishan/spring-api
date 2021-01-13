@@ -1,0 +1,26 @@
+server:
+  port: ${PORT}
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: ${DLL_AUTO}
+  datasource:
+    url: ${DB_HOST}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+app:
+  version: '0.0.1 Initial'
+  jwtSecret: ${JWT_SECRET}
+  jwtExpirationMins: ${JWT_EXPIRE_MINS}
+  
+logging:
+  level:
+    root: ${LOG_LEVEL}
+    com.eurekaconnect: ${LOG_LEVEL}
+    org.hibernate.sql: ${LOG_LEVEL}
+    org.hibernate.type.descriptor.sql.BasicBinder: ERROR
+    org.hibernate.type.descriptor.sql.BasicExtractor: ERROR
+    org.springframework.jdbc.core: ${LOG_LEVEL}
+    org.hibernate.SQL: ${LOG_LEVEL}

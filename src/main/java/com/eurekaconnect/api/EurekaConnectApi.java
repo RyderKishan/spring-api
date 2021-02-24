@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EurekaConnectApiApplication {
+public class EurekaConnectApi {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EurekaConnectApiApplication.class, args);
+		SpringApplication.run(EurekaConnectApi.class, args);
 	}
 
 }

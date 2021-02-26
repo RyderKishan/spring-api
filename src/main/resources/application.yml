@@ -4,7 +4,10 @@ server:
 spring:
   jpa:
     hibernate:
-      ddl-auto: ${DLL_AUTO}
+      ddl-auto: create
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     url: ${DB_HOST}
     username: ${DB_USERNAME}
@@ -17,10 +20,8 @@ app:
   
 logging:
   level:
-    root: ${LOG_LEVEL}
-    com.eurekaconnect: ${LOG_LEVEL}
-    org.hibernate.sql: ${LOG_LEVEL}
-    org.hibernate.type.descriptor.sql.BasicBinder: ERROR
-    org.hibernate.type.descriptor.sql.BasicExtractor: ERROR
-    org.springframework.jdbc.core: ${LOG_LEVEL}
-    org.hibernate.SQL: ${LOG_LEVEL}
+    root: ERROR
+    com.eurekaconnect: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.*: ERROR
+    org.springframework.jdbc.core: ERROR

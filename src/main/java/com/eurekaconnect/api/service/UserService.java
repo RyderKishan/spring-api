@@ -9,10 +9,13 @@ import com.eurekaconnect.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
   private final UserRepository userRepository;
 
   @Autowired
@@ -62,6 +65,13 @@ public class UserService {
 
   public void deleteAll() {
     userRepository.deleteAll();
+  }
+
+  @Override
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    User user = userRepository.findUserByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException(username));
+    return user;
   }
 
 }

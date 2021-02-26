@@ -40,7 +40,7 @@ public class UserController {
 
   @PostMapping("/")
   public ResponseEntity<User> saveUser(@RequestBody User user) {
-    LOGGER.info("saveUser :: userName {} orgId {}", user.getUserName());
+    LOGGER.info("saveUser :: username {}", user.getUsername());
     User savedUser = userService.save(user);
     return new ResponseEntity<>(savedUser, HttpStatus.OK);
   }
@@ -54,7 +54,7 @@ public class UserController {
 
   @GetMapping("/")
   public ResponseEntity<Page<User>> findAllUsers(Pageable pageable) {
-    LOGGER.info("findAllUsers :: page {} size {} orgId {}", pageable.getPageNumber(), pageable.getPageSize());
+    LOGGER.info("findAllUsers :: page {} size {}", pageable.getPageNumber(), pageable.getPageSize());
     Page<User> user = userService.findAll(pageable);
     Optional.ofNullable(user).orElseThrow(() -> new NoContentException("User list empty", "E204009"));
     return new ResponseEntity<>(user, HttpStatus.OK);

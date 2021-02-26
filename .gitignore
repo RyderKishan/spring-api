@@ -3,6 +3,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=gradle,visualstudio,visualstudiocode,openframeworks+visualstudio,intellij,intellij+all,intellij+iml,java,java-web,code-java,maven,microsoftoffice
 
 *.env
+setenv.sh
+setenv.bat
 env.sh
 env.bat
 azure/

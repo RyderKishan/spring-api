@@ -14,11 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
@@ -27,17 +27,19 @@ import lombok.Data;
 @Entity
 @Table(name = "ec_users")
 public class User implements UserDetails {
-  /**
-   *
-   */
+
   private static final long serialVersionUID = 179587349769383710L;
+
+  public User() {
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
   @Column(unique = true, nullable = false)
-  private String username;
+  private String email;
+
   private String password;
 
   private Boolean accountNonExpired;
@@ -45,9 +47,16 @@ public class User implements UserDetails {
   private Boolean credentialsNonExpired;
   private Boolean enabled;
 
+  @Transient
+  private Set<Organisation> organisations = new HashSet<Organisation>();
+
+  @Transient
+  private Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+
   @JsonIgnore
   @Column(nullable = false, updatable = false)
   private LocalDateTime createdOn;
+
   @JsonIgnore
   private LocalDateTime updatedOn;
 
@@ -68,14 +77,12 @@ public class User implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-    authorities.add(new SimpleGrantedAuthority("ADMIN"));
     return authorities;
   }
 
   @Override
   public String getUsername() {
-    return username;
+    return email;
   }
 
   @Override

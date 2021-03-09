@@ -9,21 +9,25 @@ import com.eurekaconnect.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   public User save(User user) {
+    String nPassword = passwordEncoder.encode(user.getPassword());
+    user.setPassword(nPassword);
     return userRepository.save(user);
   }
 
@@ -68,9 +72,9 @@ public class UserService implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepository.findUserByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException(username));
+  public User loadUserByUsername(String email) throws UsernameNotFoundException {
+    User user = userRepository.findUserByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException(email));
     return user;
   }
 

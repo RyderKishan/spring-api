@@ -1,14 +1,14 @@
 package com.eurekaconnect.api.model;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
 @Data
 public class ErrorDetail {
+
   private LocalDateTime timestamp;
   private String errorCode;
   private String errorMessage;
@@ -21,8 +21,14 @@ public class ErrorDetail {
     super();
   }
 
-  public ErrorDetail(String errorCode, String errorMessage, String exceptionName,
-      String description, String url, String sessionId) {
+  public ErrorDetail(
+    String errorCode,
+    String errorMessage,
+    String exceptionName,
+    String description,
+    String url,
+    String sessionId
+  ) {
     this.timestamp = LocalDateTime.now(ZoneOffset.UTC);
     this.errorCode = errorCode;
     this.errorMessage = errorMessage;

@@ -1,16 +1,12 @@
 package com.eurekaconnect.api.repository;
 
-import java.util.Optional;
-
-import com.eurekaconnect.api.model.User;
+import com.eurekaconnect.api.model.Organisation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User> {
-
-  Optional<User> findUserByEmail(String email);
+public interface OrganisationRepository extends JpaRepository<Organisation, Integer>, JpaSpecificationExecutor<Organisation> {
 
 }

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.eurekaconnect.api.model.Organisation;
 import com.eurekaconnect.api.model.User;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +38,12 @@ public class JwtTokenUtil {
     return claims;
   }
 
-  public String generateToken(User user) {
+  public String generateToken(User user, Organisation organisation) {
 
     Claims claims = Jwts.claims().setSubject(user.getUsername());
     claims.put("id", String.valueOf(user.getId()));
     claims.put("password", String.valueOf(user.getPassword()));
+    claims.put("orgId", String.valueOf(organisation.getId()));
 
     Date validity = new Date(System.currentTimeMillis() + 1000 * 60 * jwtExpirationMins);
 

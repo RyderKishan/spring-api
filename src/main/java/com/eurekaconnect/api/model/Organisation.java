@@ -25,6 +25,7 @@ public class Organisation {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer id;
 
+  private String code;
   private String name;
 
   @Column(nullable = false, unique = true)

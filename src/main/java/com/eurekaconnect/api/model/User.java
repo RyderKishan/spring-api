@@ -2,9 +2,9 @@ package com.eurekaconnect.api.model;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,10 +48,10 @@ public class User implements UserDetails {
   private Boolean enabled;
 
   @Transient
-  private Set<Organisation> organisations = new HashSet<Organisation>();
+  private List<Organisation> organisations = new ArrayList<Organisation>();
 
   @Transient
-  private Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+  private List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
   @JsonIgnore
   @Column(nullable = false, updatable = false)

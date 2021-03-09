@@ -3,7 +3,10 @@ package com.eurekaconnect.api.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.eurekaconnect.api.model.Organisation;
 import com.eurekaconnect.api.model.User;
+import com.eurekaconnect.api.repository.OrganisationRepository;
+import com.eurekaconnect.api.repository.OrganisationUserRoleRepository;
 import com.eurekaconnect.api.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +20,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
   private final UserRepository userRepository;
+  private final OrganisationRepository organisationRepository;
+  private final OrganisationUserRoleRepository organisationUserRoleRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+  public UserService(UserRepository userRepository, OrganisationUserRoleRepository organisationUserRoleRepository,
+      OrganisationRepository organisationRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
+    this.organisationUserRoleRepository = organisationUserRoleRepository;
+    this.organisationRepository = organisationRepository;
     this.passwordEncoder = passwordEncoder;
   }
 
@@ -73,8 +81,10 @@ public class UserService implements UserDetailsService {
 
   @Override
   public User loadUserByUsername(String email) throws UsernameNotFoundException {
-    User user = userRepository.findUserByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException(email));
+    User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+    List<Integer> orgIds = organisationUserRoleRepository.findAllOrgIdByUserId(user.getId());
+    List<Organisation> organisations = organisationRepository.findAllById(orgIds);
+    user.setOrganisations(organisations);
     return user;
   }
 

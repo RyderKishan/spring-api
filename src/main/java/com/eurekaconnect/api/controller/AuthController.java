@@ -1,16 +1,13 @@
 package com.eurekaconnect.api.controller;
 
-import com.eurekaconnect.api.model.User;
-import com.eurekaconnect.api.security.JwtTokenUtil;
-import com.eurekaconnect.api.service.UserService;
+import com.eurekaconnect.api.model.AuthResponse;
+import com.eurekaconnect.api.service.AuthService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,28 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 
-  private final UserService userService;
+  private final AuthService authService;
 
   @Autowired
-  AuthenticationManager authenticationManager;
-
-  @Autowired
-  private JwtTokenUtil jwtTokenUtil;
-
-  @Autowired
-  public AuthController(UserService userService) {
-    this.userService = userService;
+  public AuthController(AuthService authService) {
+    this.authService = authService;
   }
 
   @PostMapping("/login")
-  public ResponseEntity<String> login(@RequestHeader String email, @RequestHeader String password) {
-    LOGGER.info("login :: email {} password {}", email, password);
-
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-
-    User user = userService.loadUserByUsername(email);
-    String token = jwtTokenUtil.generateToken(user);
-    return new ResponseEntity<>(token, HttpStatus.OK);
+  public ResponseEntity<AuthResponse> login(@RequestHeader String email, @RequestHeader String password,
+      @RequestHeader String orgId) {
+    LOGGER.info("login :: email {} orgId {}", email, orgId);
+    AuthResponse authResponse = authService.usernamePasswordAuthenticationToken(email, password, orgId);
+    return new ResponseEntity<>(authResponse, HttpStatus.OK);
   }
 
 }

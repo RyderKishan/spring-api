@@ -31,9 +31,6 @@ public class OrganisationUserRole {
   @Column(nullable = false)
   private Integer roleId;
 
-  @Column(nullable = false)
-  private String state;
-
   @JsonIgnore
   @Column(nullable = false, updatable = false)
   private LocalDateTime createdOn;
@@ -43,7 +40,6 @@ public class OrganisationUserRole {
 
   @PrePersist
   public void prePersist() {
-    state = "NV";
     createdOn = LocalDateTime.now(ZoneOffset.UTC);
     updatedOn = LocalDateTime.now(ZoneOffset.UTC);
   }
